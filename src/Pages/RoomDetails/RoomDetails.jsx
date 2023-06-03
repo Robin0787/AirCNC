@@ -23,7 +23,7 @@ const RoomDetails = () => {
                                 <Button label={'Reserve'} />
                                 <div className='flex justify-between font-bold pt-2'>
                                     <p>Price: </p>
-                                    <p>545</p>
+                                    <p>$545</p>
                                 </div>
                             </div>
                         </div>

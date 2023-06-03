@@ -10,7 +10,7 @@ const Rooms = () => {
     const [loading, setLoading] = useState(false);
     const [params, setParams] = useSearchParams();
     const category = params.get('category');
-    console.log(category);
+    console.log('category', category);
     useEffect(() => {
         setLoading(true);
         fetch('rooms.json')

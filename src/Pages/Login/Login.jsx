@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 import { TbFidgetSpinner } from 'react-icons/tb';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { saveUser } from '../../APIs/auth';
 import { AuthContext } from '../../providers/AuthProvider';
 
 const Login = () => {
@@ -16,6 +17,8 @@ const Login = () => {
         signInWithGoogle()
             .then(res => {
                 toast.success('Login Successful');
+                // Save user to DB
+                saveUser(res.user);
                 setLoading(false);
                 navigate(from, {replace: true});
             })

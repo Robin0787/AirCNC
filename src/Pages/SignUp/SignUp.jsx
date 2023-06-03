@@ -4,6 +4,7 @@ import { useContext, useReducer } from 'react';
 import { toast } from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 import { TbFidgetSpinner } from 'react-icons/tb';
+import { saveUser } from '../../APIs/auth';
 import { AuthContext } from '../../providers/AuthProvider';
 
 const SignUp = () => {
@@ -38,6 +39,8 @@ const SignUp = () => {
             .then(res => {
                 toast.success('SignUp Successful');
                 updateUserProfile(name, display_url);
+                // Save user to DB
+                saveUser(res.user);
                 form.reset();
                 setLoading(false);
                 navigate(from, {replace: true});
@@ -55,6 +58,8 @@ const SignUp = () => {
             .then(res => {
                 toast.success('SignUp Successful');
                 setLoading(false);
+                // Save user to DB
+                saveUser(res.user);
                 navigate(from, {replace: true});
             })
             .catch(err => {
