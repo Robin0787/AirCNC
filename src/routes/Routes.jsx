@@ -1,11 +1,15 @@
 import { createBrowserRouter } from 'react-router-dom'
-import AddForm from '../Pages/Dashboard/AddRoom'
+import { roomDetails } from '../APIs/rooms'
+import AddRoom from '../Pages/Dashboard/AddRoom'
 import Home from '../Pages/Home/Home'
 import Login from '../Pages/Login/Login'
+import MyBookings from '../Pages/MyBookings/MyBookings'
+import MyListings from '../Pages/MyListings/MyListings'
 import RoomDetails from '../Pages/RoomDetails/RoomDetails'
 import SignUp from '../Pages/SignUp/SignUp'
 import DashboardLayout from '../layouts/DashboardLayout'
 import Main from '../layouts/Main'
+import PrivateRoute from './PrivateRoute'
 
 export const router = createBrowserRouter([
   {
@@ -18,7 +22,8 @@ export const router = createBrowserRouter([
       },
       {
         path: '/room/:id',
-        element: <RoomDetails />
+        element: <RoomDetails />,
+        loader: ({params}) => roomDetails(params.id)
       }
     ]
   },
@@ -32,11 +37,23 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashboardLayout />,
+    element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
     children: [
       {
+        path: '/dashboard',
+        element: <PrivateRoute><MyListings /></PrivateRoute>
+      },
+      {
         path: '/dashboard/add-room',
-        element: <AddForm />
+        element: <AddRoom />
+      },
+      {
+        path: '/dashboard/my-bookings',
+        element: <PrivateRoute><MyBookings /></PrivateRoute>
+      },
+      {
+        path: '/dashboard/my-listings',
+        element: <PrivateRoute><MyListings /></PrivateRoute>
       }
     ]
   }

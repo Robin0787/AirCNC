@@ -1,27 +1,27 @@
 import React, { useContext, useState } from 'react'
 import { AiOutlineBars } from 'react-icons/ai'
-import { BsFillHouseAddFill } from 'react-icons/bs'
 import { FcSettings } from 'react-icons/fc'
 import { GrLogout } from 'react-icons/gr'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../providers/AuthProvider'
 import Logo from '../Shared/Navbar/Logo'
+import GuestMenu from './GuestMenu'
+import HostMenu from './HostMenu'
 const Sidebar = () => {
-  const navigate = useNavigate()
-  const [toggle, setToggle] = useState(false)
-  const { user, logOut } = useContext(AuthContext)
-
-  const [isActive, setActive] = useState('false')
+  const navigate = useNavigate();
+  const [toggle, setToggle] = useState(false);
+  const { user, logOut, userRole } = useContext(AuthContext);
+  const [isActive, setActive] = useState('false');
   const toggleHandler = event => {
     setToggle(event.target.checked)
   }
   // Sidebar Responsive Handler
   const handleToggle = () => {
-    setActive(!isActive)
+    setActive(!isActive);
   }
   const handleLogOut = () => {
-    logOut()
-    navigate('/')
+    logOut();
+    navigate('/');
   }
   return (
     <>
@@ -77,7 +77,8 @@ const Sidebar = () => {
           {/* Nav Items */}
           <div className='flex flex-col justify-between flex-1 mt-6'>
             <nav>
-              <>
+              {
+                userRole && userRole === 'host' ? <>
                 <label
                   htmlFor='Toggle3'
                   className='inline-flex w-full justify-center items-center px-2 rounded-md cursor-pointer text-gray-800'
@@ -96,19 +97,13 @@ const Sidebar = () => {
                   </span>
                 </label>
                 {/* Menu Links */}
-                <NavLink
-                  to='add-room'
-                  className={({ isActive }) =>
-                    `flex items-center px-4 py-2 mt-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                      isActive ? 'bg-gray-300  text-gray-700' : 'text-gray-600'
-                    }`
-                  }
-                >
-                  <BsFillHouseAddFill className='w-5 h-5' />
-
-                  <span className='mx-4 font-medium'>Add Room</span>
-                </NavLink>
+                {
+                  toggle  ? <HostMenu /> : <GuestMenu />
+                }
               </>
+              :
+              <GuestMenu />
+              }
             </nav>
           </div>
         </div>

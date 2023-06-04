@@ -1,4 +1,7 @@
 import React, { useContext, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { addRoom } from '../../APIs/rooms';
 import { uploadImage } from '../../APIs/uploadImage';
 import AddRoomForm from '../../Conponents/Dashboard/AddRoomForm';
 import { AuthContext } from '../../providers/AuthProvider';
@@ -6,6 +9,7 @@ import { AuthContext } from '../../providers/AuthProvider';
 const AddRoom = () => {
   const {user} = useContext(AuthContext);
   const [ loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const [dates, setDates] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -27,20 +31,27 @@ const AddRoom = () => {
     const category = form.category.value;
     const image = form.image.files[0];
     const from = dates.startDate;
-    const to = dates.startDate;
-    
+    const to = dates.endDate;
     uploadImage(image)
     .then(data => {
       const roomData = {
         image: data.data.display_url,
-        location, title, price, total_guest, bedrooms, bathrooms, description, from, to,
+        location, title, price, total_guest, category, bedrooms, bathrooms, description, from, to,
         host: {
           name: user?.displayName,
-          image: user?.imageURL,
+          image: user?.photoURL,
           email: user?.email,
         }
       }
-      console.log(roomData);
+      // posting rooms data to server
+      addRoom(roomData)
+      .then(data => {
+        if(data.insertedId) {
+          toast.success('Room Added');
+          form.reset();
+          navigate('/dashboard/my-listings');
+        }
+      }).catch(err => {console.log(err.message)});
       setLoading(false);
     }).catch(err=>{console.log(err.message);setLoading(false)});
 

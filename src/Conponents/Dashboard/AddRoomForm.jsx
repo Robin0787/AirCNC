@@ -157,7 +157,7 @@ const AddRoomForm = ({
         </div>
         <button
           type='submit'
-          className='w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500'
+          className='w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500 disabled:opacity-60 disabled:cursor-not-allowed' disabled={loading}
         >
           {loading ? (
             <TbFidgetSpinner className='m-auto animate-spin' size={24} />

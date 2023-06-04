@@ -5,7 +5,7 @@ export const saveUser = user => {
     const currentUser = {
         email: user.email
     };
-    fetch(`http://localhost:5000/users/${user?.email}`, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/users/${user?.email}`, {
         method: 'PUT',
         headers: {
             'content-type': 'application/json'
@@ -19,4 +19,27 @@ export const saveUser = user => {
             toast.success('User Saved');
         };
     });
+}
+// become a host
+export const becomeHost = async email => {
+    const currentUser = {
+        role: 'host'
+    };
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/${email}`, {
+        method: 'PUT',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(currentUser)
+    })
+    const data = await res.json();
+    return data;
+};  
+
+// Get users role
+export const getUserRole = email => {
+
+    return fetch(`${import.meta.env.VITE_API_BASE_URL}/user/${email}`)
+    .then(res => res.json())
+    .then(data => data?.role);
 }
